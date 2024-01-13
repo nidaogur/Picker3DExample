@@ -1,6 +1,7 @@
 using Runtime.Commands.Level;
 using Runtime.Data.UnityObjects;
 using Runtime.Data.ValueObjects;
+using Runtime.Enums;
 using Runtime.Signals;
 using UnityEngine;
 
@@ -34,13 +35,14 @@ namespace Runtime.Managers
         {
             _currentLevel=GetActiveLevel();
             _levelData= GetLevelData();
+            Init();
         }
         
-      
         private void Init()
         {
             _onLevelDestroyerCommand = new OnLevelDestroyerCommand(levelHolder);
             _onLevelLoaderCommand = new OnLevelLoaderCommand(levelHolder);
+
         }
 
         private LevelData GetLevelData()
@@ -99,6 +101,7 @@ namespace Runtime.Managers
         private void Start()
         {
             CoreGameSignals.Instance.onLevelInitialize?.Invoke((byte)(_currentLevel % totalLevelCount));
+            CoreUISignals.Instance.onOpenPanel(UIPanelTypes.Start, 1);
         }
 
      

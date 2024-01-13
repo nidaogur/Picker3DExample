@@ -11,13 +11,18 @@ namespace Runtime.Managers
         {
             SubscribeEvents();
         }
-
         private void SubscribeEvents()
         {
             CoreGameSignals.Instance.onLevelInitialize += OnLevelInitialize;
             CoreGameSignals.Instance.onLevelSuccessful += OnLevelSuccessful;
             CoreGameSignals.Instance.onLevelFailed += OnLevelFailed;
             CoreGameSignals.Instance.onReset += OnReset;
+            CoreGameSignals.Instance.onStageAreaSuccessful += OnStageAreaSuccessful;
+        }
+
+        private void OnStageAreaSuccessful(byte stageValue)
+        {
+            UISignals.Instance.onSetStageColor?.Invoke(stageValue);
         }
 
         private void OnLevelFailed()
@@ -31,10 +36,10 @@ namespace Runtime.Managers
         }
 
 
-        private void OnLevelInitialize(byte arg0)
+        private void OnLevelInitialize(byte levelValue)
         {
             CoreUISignals.Instance.onOpenPanel.Invoke(UIPanelTypes.Level,0);
-            UISignals.Instance.onSetLevelValue.Invoke((byte)CoreGameSignals.Instance.onGetLevelValue?.Invoke());
+            UISignals.Instance.onSetLevelValue.Invoke(levelValue);
         }
         private void OnReset()
         {
